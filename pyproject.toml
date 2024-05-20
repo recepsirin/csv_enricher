@@ -1,3 +1,13 @@
+[tool.black]
+line-length = 120
+target-version = ["py310"]
+
+[flake8]
+max-line-length = 120
+
+[tool.isort]
+line_length = 120
+
 [tool.poetry]
 name = "csv-enricher"
 version = "0.1.0"
@@ -9,6 +19,12 @@ packages = [{include = "csv_enricher"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 
+
+[tool.poetry.group.dev.dependencies]
+black = "^24.4.2"
+isort = "^5.13.2"
+mypy = "^1.10.0"
+pre-commit = "^3.7.1"
 
 [build-system]
 requires = ["poetry-core"]
