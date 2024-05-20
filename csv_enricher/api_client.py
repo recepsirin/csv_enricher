@@ -21,7 +21,7 @@ class APIClient:
                 if isinstance(lei, list):
                     lei = ",".join(lei)  # If lei is a list, combine them into a single string separated by commas
                 params = {"filter[lei]": lei}  # Specify the correct filter format
-                response = await client.get(url, params=params)
+                response = await client.get(url, params=params, timeout=60.0)
                 response.raise_for_status()
                 return response
             except httpx.HTTPStatusError as exc:
