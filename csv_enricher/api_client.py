@@ -1,6 +1,7 @@
 import configparser
 
 import httpx
+from tenacity import retry, retry_if_exception, stop_after_attempt, wait_random
 
 
 class APIClient:
@@ -11,6 +12,7 @@ class APIClient:
         resource = config["gleif"]["RESOURCE"]
         return base_url, resource
 
+    @retry(stop=stop_after_attempt(3), retry=retry_if_exception(httpx.HTTPStatusError), wait=wait_random(min=1, max=5))
     async def get_all_lei_records(self, lei: str | list[str]) -> httpx.Response:
         """Retrieve LEI Records by LEI (record resource identifier) or by filtering."""
 
