@@ -23,6 +23,9 @@ asyncio = "^3.4.3"
 aiocsv = "^1.3.2"
 types-aiofiles = "^23.2.0.20240403"
 aiofiles = "^23.2.1"
+pytest = "^8.2.1"
+pytest-asyncio = "^0.23.7"
+pytest-mock = "^3.14.0"
 
 
 [tool.poetry.group.dev.dependencies]
