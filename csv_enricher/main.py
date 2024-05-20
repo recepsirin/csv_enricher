@@ -9,6 +9,7 @@ from aiocsv import AsyncDictReader, AsyncDictWriter
 from aiofiles import os
 
 from csv_enricher.api_client import APIClient
+from csv_enricher.functions import clean_temp_csv_files, get_files_in_directory, split_csv_file
 
 
 async def read_csv_async(file_path: str) -> tuple[list[dict], list[str]]:
@@ -81,7 +82,16 @@ async def write_data_to_csv(file_path: str, data: list[dict[str, Any]]) -> None:
 
 
 async def main() -> None:
-    pass
+    file_to_be_enriched = ""
+    await split_csv_file(file_to_be_enriched, 500)  # so far most efficient option
+    files = await get_files_in_directory("_temp/chunks/")
+    sorted_files = sorted(files, key=lambda x: int(x.split(".")[0]))
+    for file in sorted_files:
+        rows_list, leis = await read_csv_async(f"_temp/chunks/{file}")
+        enriched_rows = await enrich(rows_list, leis)
+        await write_data_to_csv(".csv", enriched_rows)
+
+    await clean_temp_csv_files("_temp/chunks/")
 
 
 if __name__ == "__main__":
