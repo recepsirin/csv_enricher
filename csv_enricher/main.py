@@ -114,3 +114,4 @@ if __name__ == "__main__":
     logger.info("Starting the CSV enrichment process")
     asyncio.run(main(args.filepath))
     logger.info("CSV enrichment process completed")
+    print("\033[92mCSV enrichment process completed.\033[0m You can find the output file in the current directory.")
