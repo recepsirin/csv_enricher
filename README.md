@@ -65,7 +65,11 @@ poetry build
 ### Style
 
 **Black**: Black is used for code formatting.
+
 **isort**: isort is used for importing sorting.
+
 **mypy**: mypy is used for static type checking.
+
 **flake8**: flake8 is used as a code linter.
+
 **pre-commit**: pre-commit is used to automatically run the above tools before each commit.
