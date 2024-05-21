@@ -103,15 +103,31 @@ async def main(file_to_be_enriched: str) -> None:
     logger.info(f"Finished process for file: {file_to_be_enriched}")
 
 
-def parse_args() -> argparse.Namespace:
+async def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Process a CSV file.")
     parser.add_argument("filepath", type=str, help="The path to the CSV file")
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    if not args.filepath.lower().endswith(".csv"):
+        parser.error("The provided file must have a .csv extension.")
+
+    if not await aiofiles.os.path.isfile(args.filepath):
+        parser.error(f"The provided file '{args.filepath}' does not exist.")
+
+    return args
+
+
+async def run() -> None:
+    try:
+        args = await parse_args()
+        print("Starting the CSV enrichment process")
+        await main(args.filepath)
+        print("\033[92mCSV enrichment process completed.\033[0m You can find the output file in the current directory.")
+    except argparse.ArgumentError as e:
+        print(e)
+    except Exception as e:
+        print("\033[91mAn error occurred during CSV enrichment process:", e, "\033[0m")
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    logger.info("Starting the CSV enrichment process")
-    asyncio.run(main(args.filepath))
-    logger.info("CSV enrichment process completed")
-    print("\033[92mCSV enrichment process completed.\033[0m You can find the output file in the current directory.")
+    asyncio.run(run())
