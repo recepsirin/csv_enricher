@@ -50,7 +50,7 @@ async def enrich(rows: list[dict], lei_numbers: list[str] | str) -> list:
                 if record["country"] == "GB":  # add check to validate either notional or rate is 0
                     row["transaction_costs"] = (float(row["notional"]) * float(row["rate"])) - float(row["notional"])
 
-                elif record["country"] == "NL":
+                elif record["country"] == "NL" and row["rate"] != 0:
                     row["transaction_costs"] = abs(
                         (float(row["notional"]) * (1 / float(row["rate"]))) - float(row["notional"])
                     )
