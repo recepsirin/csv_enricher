@@ -9,7 +9,7 @@ from aiofiles import os
 
 async def get_files_in_directory(directory: str) -> list[str]:
     files = await os.listdir(directory)
-    files.remove(".gitkeep")
+    files.remove(".gitkeep") if ".gitkeep" in files else None
     return files
 
 
