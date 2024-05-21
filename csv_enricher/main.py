@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import asyncio
 import csv
 from typing import Any
@@ -81,8 +82,7 @@ async def write_data_to_csv(file_path: str, data: list[dict[str, Any]]) -> None:
         await writer.writerows(data)
 
 
-async def main() -> None:
-    file_to_be_enriched = "input.csv"
+async def main(file_to_be_enriched: str) -> None:
     await split_csv_file(file_to_be_enriched, 500)  # so far most efficient option
     files = await get_files_in_directory("_temp/chunks/")
     sorted_files = sorted(files, key=lambda x: int(x.split(".")[0]))
@@ -94,5 +94,12 @@ async def main() -> None:
     await clean_temp_csv_files("_temp/chunks/")
 
 
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Process a CSV file.")
+    parser.add_argument("filepath", type=str, help="The path to the CSV file")
+    return parser.parse_args()
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    args = parse_args()
+    asyncio.run(main(args.filepath))
